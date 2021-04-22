@@ -18,6 +18,8 @@ const password = require('../assets/icons/password.png');
 const profile = require('../assets/icons/profile.png');
 const reload = require('../assets/icons/reload.png');
 const time = require('../assets/icons/time.png');
+const festi = require('../assets/icons/festi-icon.png');
+const search = require('../assets/icons/search.png');
 
 export default {
     back,
@@ -39,5 +41,7 @@ export default {
     password,
     time,
     map,
-    artists
+    artists,
+    festi,
+    search
 };
