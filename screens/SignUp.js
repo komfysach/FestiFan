@@ -114,7 +114,7 @@ const SignUp = ({ navigation }) => {
                 }}
             >
                 {/* Full Name */}
-                <View syle={{
+                <View style={{
 
                 }}>
                     <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, marginLeft: SIZES.padding * 3, marginTop: SIZES.padding * 2 }}>
@@ -126,7 +126,7 @@ const SignUp = ({ navigation }) => {
                             borderColor: COLORS.primary_default,
                             borderWidth: 1,
                             height: 40,
-                            color: COLORS.primary_bg,
+                            color: COLORS.primary_default,
                             ...FONTS.body4,
                             backgroundColor: COLORS.primary_bg,
                             borderRadius: 20
@@ -163,7 +163,7 @@ const SignUp = ({ navigation }) => {
                                 backgroundColor: COLORS.primary_bg,
                                 borderRadius: 20
                             }}
-                            onPress={() => console.log("Show Modal")}
+                            onPress={() => setModalVisible(true)}
                         >
                             <View style={{ justifyContent: 'center' }}>
                                 <Image
@@ -204,7 +204,7 @@ const SignUp = ({ navigation }) => {
                                 borderColor: COLORS.primary_default,
                                 borderWidth: 1,
                                 height: 40,
-                                color: COLORS.primary_bg,
+                                color: COLORS.primary_default,
                                 ...FONTS.body4,
                                 backgroundColor: COLORS.primary_bg,
                                 borderRadius: 20
