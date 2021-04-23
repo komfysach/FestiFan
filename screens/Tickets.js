@@ -238,6 +238,18 @@ const Tickets = ({ navigation }) => {
 
     })
 
+    function renderTicketsHeader() {
+        return (
+            <View>
+                <TouchableOpacity>
+                    <Text style={{ color: COLORS.primary_default, ...FONTS.h3, marginTop: SIZES.padding, marginLeft: SIZES.padding * 14.5, marginBottom: SIZES.padding * -2 }}>Tickets</Text>
+                </TouchableOpacity>
+            </View>
+
+        )
+
+    }
+
     function renderHeader() {
         return (
             <View style={{ borderColor: COLORS.primary_default, borderWidth: 1 }}>
@@ -388,6 +400,7 @@ const Tickets = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
+            {renderTicketsHeader()}
             {renderTabs(selectedTab.title)}
             {renderSearchBar()}
 
