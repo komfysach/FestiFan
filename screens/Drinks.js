@@ -59,7 +59,7 @@ const ScrollableCard = ({ navigation, productList }) => {
 
     const renderCard = ({ item }) => (
         <TouchableOpacity
-            style={{ marginLeft: SIZES.padding * 2, marginTop: SIZES.padding, borderColor: COLORS.primary_default, borderWidth: 1, borderRadius: 20, height: SIZES.height / 2.5 }}
+            style={{ marginLeft: SIZES.padding * 2, marginTop: SIZES.padding * -0.01, borderColor: COLORS.primary_default, borderWidth: 1, borderRadius: 20, height: SIZES.height / 2.55 }}
         >
             <View style={{ width: SIZES.width / 1.5, margin: SIZES.padding }}>
                 <Image
@@ -275,6 +275,18 @@ const Drinks = ({ navigation }) => {
 
     })
 
+    function renderDrinksHeader() {
+        return (
+            <View>
+                <TouchableOpacity>
+                    <Text style={{ color: COLORS.primary_default, ...FONTS.h3, marginTop: SIZES.padding, marginLeft: SIZES.padding * 15, marginBottom: SIZES.padding * -2 }}>Drinks</Text>
+                </TouchableOpacity>
+            </View>
+
+        )
+
+    }
+
     function renderHeader() {
         return (
             <View style={{ borderColor: COLORS.primary_default, borderWidth: 1 }}>
@@ -425,6 +437,7 @@ const Drinks = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
+            {renderDrinksHeader()}
             {renderTabs(selectedTab.title)}
             {renderSearchBar()}
 
