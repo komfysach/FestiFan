@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import LottieView from 'lottie-react-native';
-
 import { images } from '../constants';
+
+import Image from 'react-native';
 
 export default class Splash extends Component {
     constructor(props) {
@@ -13,8 +13,10 @@ export default class Splash extends Component {
     }
     render() {
         return (
-            <LottieView source={images.festiSplash} />
+            <Image source={images.festiSplash} />
         )
     }
 
 }
+
+

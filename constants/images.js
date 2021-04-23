@@ -7,7 +7,7 @@ const onBoarding2 = require('../assets/images/onboarding-2.png');
 const onBoarding3 = require('../assets/images/onboarding-3.png');
 const onBoarding4 = require('../assets/images/onboarding-4.png');
 const onBoarding5 = require('../assets/images/onboarding-5.png');
-const festiSplash = require('../assets/images/festi-splash.json');
+const festiSplash = require('../assets/images/festi-splash.png');
 
 export default {
     festiLogo,
