@@ -11,6 +11,7 @@ import {
     ScrollView,
     Platform
 } from "react-native"
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Modal from 'react-native-modal';
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -24,6 +25,8 @@ const SignUp = ({ navigation }) => {
     const [areas, setAreas] = React.useState([])
     const [selectedArea, setSelectedArea] = React.useState(null)
     const [modalVisible, setModalVisible] = React.useState(false)
+    let bouncyCheckboxRef: BouncyCheckbox | null = null;
+    const [checkboxState, setCheckboxState] = React.useState(false);
 
     React.useEffect(() => {
         fetch('https://restcountries.eu/rest/v2/all')
@@ -34,7 +37,7 @@ const SignUp = ({ navigation }) => {
                         code: item.alpha2Code,
                         name: item.name,
                         callingCode: `${item.callingCodes[0]}`,
-                        flag: `https://www.countryflags.io/${item.alpha2Code}/flat/64.png`
+                        flag: `https://flagcdn.com/16x12/${item.alpha2Code}.png`
                     }
                 })
 
@@ -114,9 +117,7 @@ const SignUp = ({ navigation }) => {
                 }}
             >
                 {/* Full Name */}
-                <View style={{
-
-                }}>
+                <View>
                     <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, marginLeft: SIZES.padding * 3, marginTop: SIZES.padding * 2 }}>
                         Full Name</Text>
                     <TextInput
@@ -141,10 +142,35 @@ const SignUp = ({ navigation }) => {
                     </TextInput>
 
                 </View>
+                <View>
+                    <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, marginLeft: SIZES.padding * 3, marginTop: SIZES.padding * -0.05 }}>
+                        Email</Text>
+                    <TextInput
+                        style={{
+                            marginVertical: SIZES.padding,
+                            margin: SIZES.padding * 2,
+                            borderColor: COLORS.primary_default,
+                            borderWidth: 1,
+                            height: 40,
+                            color: COLORS.primary_default,
+                            ...FONTS.body4,
+                            backgroundColor: COLORS.primary_bg,
+                            borderRadius: 20
+                        }}
+                        placeholder="Enter Email Address"
+                        placeholderTextColor={COLORS.primary_default}
+                        paddingHorizontal={SIZES.padding * 2}
+                        selectionColor={COLORS.primary_default}
+                        marginLeft={SIZES.padding * 2}
+                    >
+
+                    </TextInput>
+
+                </View>
 
                 {/* Phone Number */}
-                <View style={{ marginHorizontal: SIZES.padding * 2, marginTop: SIZES.padding, marginBottom: SIZES.padding }}>
-                    <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, marginLeft: SIZES.padding }}>
+                <View style={{ marginHorizontal: SIZES.padding * 2, marginBottom: SIZES.padding }}>
+                    <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, marginLeft: SIZES.padding, marginTop: SIZES.padding * -0.05 }}>
                         Phone Number
                         </Text>
 
@@ -224,9 +250,7 @@ const SignUp = ({ navigation }) => {
 
                 </View>
                 {/* I.D Number */}
-                <View syle={{
-
-                }}>
+                {/*<View>
                     <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, marginLeft: SIZES.padding * 3 }}>
                         I.D/Passport Number</Text>
                     <TextInput
@@ -250,10 +274,12 @@ const SignUp = ({ navigation }) => {
 
                     </TextInput>
 
-                </View>
+                    </View>*/}
+
+
                 {/* Password */}
                 <View style={{ marginBottom: SIZES.padding * 2 }}>
-                    <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, marginLeft: SIZES.padding * 3, marginTop: 8 }}>Password
+                    <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, marginLeft: SIZES.padding * 3, marginTop: SIZES.padding * -1 }}>Password
                     </Text>
                     <TextInput
                         style={{
@@ -297,8 +323,24 @@ const SignUp = ({ navigation }) => {
 
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity style={{ flexDirection: "row", alignContent: 'center', margin: SIZES.padding * -1 }}>
 
-            </View>
+                    <Text style={{ color: COLORS.primary_bg, ...FONTS.h4, marginLeft: SIZES.padding * 4, marginTop: SIZES.padding * -0.01 }}>I am over the age of 18</Text>
+                    <BouncyCheckbox style={{
+                        margin: SIZES.padding, marginLeft: SIZES.padding * 5.5, marginBottom: SIZES.padding * 4, marginTop: SIZES.padding * -0.3
+                    }}
+                        ref={(ref: any) => (bouncyCheckboxRef = ref)}
+                        isChecked={checkboxState}
+                        disableBuiltInState
+                        fillColor={{ color: COLORS.secondary_dark }}
+                        unfillColor={{ color: COLORS.secondary_light }}
+                        iconStyle={{ borderColor: COLORS.seondary_dark }}
+                        onPress={(isChecked: boolean = false) =>
+                            setCheckboxState(!checkboxState)
+                        } />
+                </TouchableOpacity>
+
+            </View >
         )
     }
 
