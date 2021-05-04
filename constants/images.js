@@ -8,6 +8,14 @@ const onBoarding3 = require('../assets/images/onboarding-3.png');
 const onBoarding4 = require('../assets/images/onboarding-4.png');
 const onBoarding5 = require('../assets/images/onboarding-5.png');
 const festiSplash = require('../assets/images/festi-splash.png');
+const festiBurger = require('../assets/images/festi-burger.png');
+const chickenBurger = require('../assets/images/chicken-burger.png');
+const smashBurger = require('../assets/images/smash-burger.png');
+const festiPizzas = require('../assets/images/festi-pizzas.png');
+const festiNoodles = require('../assets/images/festi-noodles.png');
+const chowMein = require('../assets/images/chow-mein.png');
+const festiDesserts = require('../assets/images/festi-desserts.png');
+const waffle = require('../assets/images/waffle.png');
 
 export default {
     festiLogo,
@@ -19,5 +27,13 @@ export default {
     onBoarding3,
     onBoarding4,
     onBoarding5,
-    festiSplash
+    festiSplash,
+    festiBurger,
+    chickenBurger,
+    smashBurger,
+    festiPizzas,
+    festiNoodles,
+    festiDesserts,
+    chowMein,
+    waffle
 }

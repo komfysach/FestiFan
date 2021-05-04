@@ -10,7 +10,7 @@ import Receipt from './Receipt'
 import AddCredits from './AddCredits'
 import Food from './Food'
 import OnBoarding from './OnBoarding'
-import Splash from './Splash'
+import Stalls from './Stalls'
 
 export {
     Tickets,
@@ -25,5 +25,5 @@ export {
     AddCredits,
     Food,
     OnBoarding,
-    Splash,
+    Stalls
 }

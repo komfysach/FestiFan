@@ -62,7 +62,7 @@ const SignUp = ({ navigation }) => {
                     marginTop: SIZES.padding * 2,
                     paddingHorizontal: SIZES.padding * 2
                 }}
-                onPress={() => console.log("sign-up")}
+                onPress={() => navigation.goBack()}
             >
                 <Image
                     source={icons.back}
@@ -72,6 +72,7 @@ const SignUp = ({ navigation }) => {
                         height: 40,
                         tintColor: COLORS.primary_default
                     }}
+
                 />
 
                 <Text style={{ marginLeft: SIZES.padding * 0.5, color: COLORS.primary_default, ...FONTS.h3 }}>Sign Up</Text>

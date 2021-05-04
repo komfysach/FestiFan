@@ -20,6 +20,10 @@ const reload = require('../assets/icons/reload.png');
 const time = require('../assets/icons/time.png');
 const festi = require('../assets/icons/festi-icon.png');
 const search = require('../assets/icons/search.png');
+const burgers = require('../assets/icons/burgers.png');
+const pizzas = require('../assets/icons/pizzas.png');
+const noodles = require('../assets/icons/noodles.png');
+const desserts = require('../assets/icons/desserts.png');
 
 export default {
     back,
@@ -43,5 +47,9 @@ export default {
     map,
     artists,
     festi,
-    search
+    search,
+    burgers,
+    pizzas,
+    noodles,
+    desserts
 };

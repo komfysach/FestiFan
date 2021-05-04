@@ -105,6 +105,8 @@ const ScrollableCard = ({ navigation, productList }) => {
 const Drinks = ({ navigation }) => {
 
     const [tabList, setTabList] = React.useState([
+
+        // Dummy Data
         {
             id: 0,
             name: 'Beer',
