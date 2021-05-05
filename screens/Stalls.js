@@ -16,6 +16,7 @@ const Stalls = ({ route, navigation }) => {
 
     const scrollX = new Animated.Value(0);
     const [stall, setStall] = React.useState(null);
+    const [orderItems, setOrderItems] = React.useState([]);
 
     React.useEffect(() => {
         let { item } = route.params;
@@ -24,13 +25,73 @@ const Stalls = ({ route, navigation }) => {
 
     })
 
+    function editOrder(action, menuId, price) {
+        let orderList = orderItems.slice()
+        let item = orderList.filter(a => a.menuId === menuId)
+
+        if (action === "+") {
+            if (item.length > 0) {
+                let newQty = item[0].qty + 1
+                item[0].qty = newQty
+                item[0].total = item[0].qty * price
+            } else {
+                const newItem = {
+                    menuId: menuId,
+                    qty: 1,
+                    price: price,
+                    total: price
+                }
+                orderList.push(newItem)
+            }
+            setOrderItems(orderList)
+        } else {
+            if (item.length > 0) {
+                if (item[0].qty > 0) {
+                    let newQty = item[0].qty - 1
+                    item[0].qty = newQty
+                    item[0].total = newQty * price
+                }
+            }
+
+            setOrderItems(orderList)
+
+        }
+    }
+
+    function getOrderQty(menuId) {
+        let orderItem = orderItems.filter(a => a.menuId === menuId)
+
+        if (orderItem.length > 0) {
+            return orderItem[0].qty
+        }
+
+        return 0
+
+    }
+
+    function getCartItemCount() {
+        let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0)
+
+        return itemCount
+
+    }
+
+    function sumOrder() {
+        let total = orderItems.reduce((a, b) => a + (b.total || 0), 0)
+
+        return total
+
+    }
+
+
+
     function renderHeader() {
         return (
             <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                     style={{
                         width: 50,
-                        paddingLeft: SIZES.padding * 2,
+                        paddingLeft: SIZES.padding,
                         justifyContent: 'center'
                     }}
                     onPress={() => navigation.goBack()}
@@ -39,8 +100,8 @@ const Stalls = ({ route, navigation }) => {
                         source={icons.back}
                         resizeMode='contain'
                         style={{
-                            width: 30,
-                            height: 30
+                            width: 40,
+                            height: 40
                         }}
                     />
                 </TouchableOpacity>
@@ -57,8 +118,10 @@ const Stalls = ({ route, navigation }) => {
                         alignItems: 'center',
                         justifyContent: 'center',
                         paddingHorizontal: SIZES.padding * 3,
+                        margin: SIZES.padding,
+                        marginLeft: SIZES.padding * -3,
                         borderRadius: SIZES.radius,
-                        backgroundColor: COLORS.primary_light
+                        backgroundColor: COLORS.secondary_light
                     }}>
                         <Text style={{ ...FONTS.h3 }}>{stall?.name}</Text>
 
@@ -108,34 +171,39 @@ const Stalls = ({ route, navigation }) => {
                                     <TouchableOpacity
                                         style={{
                                             width: 50,
-                                            backgroundColor: COLORS.white,
+                                            backgroundColor: COLORS.primary_bg,
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             borderTopLeftRadius: 25,
                                             borderBottomLeftRadius: 25
                                         }}
+                                        onPress={() => editOrder("-", item.menuId, item.price)}
                                     >
                                         <Text style={{ ...FONTS.body1 }}>-</Text>
                                     </TouchableOpacity>
                                     <View
                                         style={{
                                             width: 50,
-                                            backgroundColor: COLORS.white,
+                                            backgroundColor: COLORS.primary_bg,
                                             alignItems: 'center',
-                                            justifyContent: 'center'
+                                            justifyContent: 'center',
+
                                         }}
                                     >
-                                        <Text style={{ ...FONTS.h2 }}>5</Text>
+                                        <Text style={{ ...FONTS.h2 }}>{getOrderQty(item.menuId)}</Text>
                                     </View>
                                     <TouchableOpacity
                                         style={{
                                             width: 50,
                                             backgroundColor: COLORS.primary_bg,
                                             alignItems: 'center',
+                                            justifyContent: 'center',
                                             borderTopRightRadius: 25,
                                             borderBottomRightRadius: 25
                                         }}
+                                        onPress={() => editOrder("+", item.menuId, item.price)}
                                     >
+
                                         <Text style={{ ...FONTS.body1 }}>+</Text>
                                     </TouchableOpacity>
 
@@ -150,8 +218,8 @@ const Stalls = ({ route, navigation }) => {
                                     paddingHorizontal: SIZES.padding * 2
                                 }}
                             >
-                                <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{item.name} = {item.price.toFixed(2)}</Text>
-                                <Text style={{ ...FONTS.body3 }}>{item.description}</Text>
+                                <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{item.name} = R{item.price.toFixed(2)}</Text>
+                                <Text style={{ ...FONTS.body3, textAlign: 'center' }}>{item.description}</Text>
                             </View>
                             {/* Calories */}
                             <View
@@ -161,7 +229,7 @@ const Stalls = ({ route, navigation }) => {
                                 }}
                             >
                                 <Image
-                                    source={icons.heart}
+                                    source={icons.like}
                                     style={{
                                         width: 20,
                                         height: 20,
@@ -182,6 +250,8 @@ const Stalls = ({ route, navigation }) => {
 
         const dotPosition = Animated.divide(scrollX, SIZES.width)
 
+
+
         return (
             <View style={{ height: 30 }}>
                 <View
@@ -193,37 +263,30 @@ const Stalls = ({ route, navigation }) => {
                     }}
                 >
                     {stall?.menu.map((item, index) => {
+
                         const opacity = dotPosition.interpolate({
-                            inputRange: [index - 1, index + 1],
+                            inputRange: [index - 1, index, index + 1],
                             outputRange: [0.3, 1, 0.3],
                             extrapolate: 'clamp'
-
                         })
+
                         const dotSize = dotPosition.interpolate({
-                            inputRange: [index - 1, index + 1],
-                            outputRange: [SIZES.base * 0.8, 10, SIZES.base * 0.8],
+                            inputRange: [index - 1, index, index + 1],
+                            outputRange: [SIZES.base, 17, SIZES.base],
                             extrapolate: 'clamp'
                         })
-                        const dotColor = dotPosition.interpolate({
-                            inputRange: [index - 1, index + 1],
-                            outputRange: [COLORS.primary_light, COLORS.primary_default, COLORS.primary_light],
-                            extrapolate: 'clamp'
-                        })
-
                         return (
                             <Animated.View
                                 key={`dot-${index}`}
                                 opacity={opacity}
-                                style={{
-                                    borderRadius: SIZES.radius,
-                                    marginHorizontal: 6,
-                                    width: dotSize,
-                                    height: dotSize,
-                                    backgroundColor: dotColor
-                                }}
-                            />
+                                style={[styles.dot, { width: dotSize, height: dotSize }]}
+                            >
+
+                            </Animated.View>
                         )
+
                     })}
+
 
                 </View>
             </View>
@@ -238,6 +301,76 @@ const Stalls = ({ route, navigation }) => {
                 {
                     renderDots()
                 }
+                <View
+                    style={{
+                        backgroundColor: COLORS.primary_bg,
+                        borderTopLeftRadius: 40,
+                        borderTopRightRadius: 40,
+
+                    }}
+                >
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingVertical: SIZES.padding * 2,
+                            paddingHorizontal: SIZES.padding * 3,
+                            borderBottomColor: COLORS.primary_light,
+                            borderBottomWidth: 1,
+                            borderColor: COLORS.primary_default
+                        }}
+                    >
+                        <Text style={{ ...FONTS.h3 }}>{getCartItemCount()} items in Cart</Text>
+                        <Text style={{ ...FONTS.h3 }}>R{sumOrder()}</Text>
+                    </View>
+
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingVertical: SIZES.padding * 2,
+                            paddingHorizontal: SIZES.padding * 3
+                        }}
+                    >
+                        {/* Order Button */}
+                        <View
+                            style={{
+                                padding: SIZES.padding,
+                                marginLeft: SIZES.padding * -2,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            <TouchableOpacity
+                                style={{
+                                    width: SIZES.width * 0.9,
+                                    padding: SIZES.padding * 2,
+                                    backgroundColor: COLORS.primary_default,
+                                    alignItems: 'center',
+                                    borderRadius: SIZES.radius
+                                }}
+                            >
+                                <Text style={{ color: COLORS.primary_bg, ...FONTS.h2 }}>Order</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    {isIphoneX() &&
+                        <View
+                            style={{
+                                position: 'absolute',
+                                bottom: -34,
+                                left: 0,
+                                right: 0,
+                                height: 34,
+                                backgroundColor: COLORS.primary_bg
+                            }}
+                        >
+
+                        </View>
+                    }
+
+                </View>
             </View>
         )
     }
@@ -254,8 +387,24 @@ const Stalls = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.primary_bg
-    }
+        backgroundColor: COLORS.primary_bg,
+
+
+    },
+    dotContainer: {
+        flexDirection: 'row',
+        height: SIZES.padding
+    },
+    dotRootContainer: {
+        position: 'absolute',
+        bottom: SIZES.height > 700 ? '25%' : '20%'
+    },
+    dot: {
+        borderRadius: SIZES.radius,
+        backgroundColor: COLORS.primary_default,
+        marginHorizontal: SIZES.radius / 2
+    },
+
 })
 
 export default Stalls;

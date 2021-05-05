@@ -10,7 +10,7 @@ import React from 'react';
 import { createStackNavigator } from "@react-navigation/stack"
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native"
 
-import { SignUp, Tickets, OnBoarding } from "./screens"
+import { SignUp, Tickets, OnBoarding, Stalls } from "./screens"
 
 import Tabs from './navigation/tabs'
 
@@ -40,6 +40,7 @@ const App = () => {
 
         {/* Tabs */}
         <Stack.Screen name='Tickets' component={Tabs} />
+        <Stack.Screen name='Stalls' component={Stalls} />
       </Stack.Navigator>
     </NavigationContainer>
 

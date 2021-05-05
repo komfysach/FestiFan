@@ -391,7 +391,7 @@ const Tickets = ({ navigation }) => {
                         }}
                         onPress={() => navigation.navigate('Tickets')}
                     >
-                        <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, justifyContent: 'center', marginLeft: SIZES.padding * 3 }}>Purchase</Text>
+                        <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, justifyContent: 'center', marginLeft: SIZES.padding * 3 }}>Order</Text>
                     </TouchableOpacity>
                 </View>
             </View>

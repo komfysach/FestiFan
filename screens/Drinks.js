@@ -17,92 +17,201 @@ import {
 
 import { COLORS, images, SIZES, width, icons, FONTS } from "../constants";
 
-const ScrollableTab = ({ tabList, selectedTab, onPress }) => {
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity
-            style={{
-                marginHorizontal: SIZES.padding / 2,
-
-
-            }}
-            onPress={() => onPress(item)}
-        >
-            <Text style={{
-                color: COLORS.primary_default, ...FONTS.body3, marginHorizontal: SIZES.padding, marginVertical: SIZES.padding / 2
-            }}>{item.name}</Text>
-            {
-                selectedTab.id == item.id &&
-                <View style={{ alignItems: 'center', marginTop: SIZES.base / 3 }}>
-                    <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: COLORS.success_default }}>
-
-                    </View>
-                </View>
-            }
-        </TouchableOpacity>
-    );
-
-    return (
-        <View>
-            <FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={tabList}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-            />
-        </View>
-    )
-}
-
-const ScrollableCard = ({ navigation, productList }) => {
-
-    const renderCard = ({ item }) => (
-        <TouchableOpacity
-            style={{ marginLeft: SIZES.padding * 2, marginTop: SIZES.padding * -0.01, borderColor: COLORS.primary_default, borderWidth: 1, borderRadius: 20, height: SIZES.height / 2.55 }}
-        >
-            <View style={{ width: SIZES.width / 1.5, margin: SIZES.padding }}>
-                <Image
-                    source={item.image}
-                    resizeMode='cover'
-                    style={{ width: '90%', height: '70%', borderRadius: 20, margin: SIZES.padding }}
-                />
-            </View>
-            <View
-                style={{ position: 'absolute', bottom: 75, left: '13%', right: '10%', top: '60%' }}
-            >
-
-                <Text style={{ color: COLORS.primary_default, ...FONTS.h3 }}>{item.productName}</Text>
-                <Text style={{ color: COLORS.primary_default, ...FONTS.body3 }}>{item.productQauntity}</Text>
-
-            </View>
-            <View style={{ position: 'absolute', bottom: 20, left: 30, borderRadius: 20, paddingVertical: 10, paddingHorizontal: 15, backgroundColor: COLORS.secondary_light }}>
-                <View>
-                    <Text style={{ color: COLORS.primary_default, ...FONTS.h3 }}>R {item.price.toFixed(2)} </Text>
-                </View>
-
-            </View>
-
-
-        </TouchableOpacity>
-
-    )
-
-    return (
-        <View style={{ marginTop: SIZES.padding }}>
-            <FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={productList}
-                renderItem={renderCard}
-                keyExtractor={item => item.productId}
-            />
-        </View>
-    )
-
-}
 
 const Drinks = ({ navigation }) => {
+
+    const [orderItems, setOrderItems] = React.useState([]);
+
+    function editOrder(action, menuId, price) {
+        let orderList = orderItems.slice()
+        let item = orderList.filter(a => a.menuId === menuId)
+
+        if (action === "+") {
+            if (item.length > 0) {
+                let newQty = item[0].qty + 1
+                item[0].qty = newQty
+                item[0].total = item[0].qty * price
+            } else {
+                const newItem = {
+                    menuId: menuId,
+                    qty: 1,
+                    price: price,
+                    total: price
+                }
+                orderList.push(newItem)
+            }
+            setOrderItems(orderList)
+        } else {
+            if (item.length > 0) {
+                if (item[0].qty > 0) {
+                    let newQty = item[0].qty - 1
+                    item[0].qty = newQty
+                    item[0].total = newQty * price
+                }
+            }
+
+            setOrderItems(orderList)
+
+        }
+    }
+
+    function getOrderQty(menuId) {
+        let orderItem = orderItems.filter(a => a.menuId === menuId)
+
+        if (orderItem.length > 0) {
+            return orderItem[0].qty
+        }
+
+        return 0
+
+    }
+
+    function getCartItemCount() {
+        let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0)
+
+        return itemCount
+
+    }
+
+    function sumOrder() {
+        let total = orderItems.reduce((a, b) => a + (b.total || 0), 0)
+
+        return total
+
+    }
+
+    const ScrollableTab = ({ tabList, selectedTab, onPress }) => {
+
+        const renderItem = ({ item }) => (
+            <TouchableOpacity
+                style={{
+                    marginHorizontal: SIZES.padding / 2,
+
+
+                }}
+                onPress={() => onPress(item)}
+            >
+                <Text style={{
+                    color: COLORS.primary_default, ...FONTS.body3, marginHorizontal: SIZES.padding, marginVertical: SIZES.padding / 2
+                }}>{item.name}</Text>
+                {
+                    selectedTab.id == item.id &&
+                    <View style={{ alignItems: 'center', marginTop: SIZES.base / 3 }}>
+                        <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: COLORS.success_default }}>
+
+                        </View>
+                    </View>
+                }
+            </TouchableOpacity>
+        );
+
+        return (
+            <View>
+                <FlatList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    data={tabList}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                />
+            </View>
+        )
+    }
+
+    const ScrollableCard = ({ navigation, productList }) => {
+
+
+        const renderCard = ({ item }) => (
+            <TouchableOpacity
+                style={{ marginLeft: SIZES.padding * 2, marginTop: SIZES.padding * -0.01, borderColor: COLORS.primary_default, borderWidth: 1, borderRadius: 20, height: SIZES.height / 2.55 }}
+            >
+                <View style={{ width: SIZES.width / 1.5, margin: SIZES.padding }}>
+                    <Image
+                        source={item.image}
+                        resizeMode='cover'
+                        style={{ width: '90%', height: '70%', borderRadius: 20, margin: SIZES.padding }}
+                    />
+                </View>
+                <View
+                    style={{ position: 'absolute', bottom: 75, left: '13%', right: '10%', top: '60%' }}
+                >
+
+                    <Text style={{ color: COLORS.primary_default, ...FONTS.h3 }}>{item.productName}</Text>
+                    <Text style={{ color: COLORS.primary_default, ...FONTS.body3 }}>{item.productQauntity}</Text>
+
+                </View>
+                <View style={{ position: 'absolute', bottom: 20, left: 30, borderRadius: 20, paddingVertical: 10, paddingHorizontal: 15, backgroundColor: COLORS.secondary_light }}>
+                    <View>
+                        <Text style={{ color: COLORS.primary_default, ...FONTS.h3 }}>R {item.price.toFixed(2)} </Text>
+                    </View>
+                </View>
+                <View style={{
+                    position: 'absolute',
+                    bottom: 15, right: 10, paddingVertical: 10,
+                    borderRadius: 20,
+                    paddingHorizontal: 10,
+                    flexDirection: 'row',
+
+
+                }}>
+                    <TouchableOpacity
+                        style={{
+                            width: 32,
+                            backgroundColor: COLORS.primary_bg,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderTopLeftRadius: 25,
+                            borderBottomLeftRadius: 25
+                        }}
+                        onPress={() => editOrder("-", item.menuId, item.price)}
+                    >
+                        <Text style={{ ...FONTS.body1, color: COLORS.primary_default }}>-</Text>
+                    </TouchableOpacity>
+                    <View
+                        style={{
+                            width: 32,
+                            backgroundColor: COLORS.primary_bg,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Text style={{ ...FONTS.h3, color: COLORS.primary_default }}>1</Text>
+                    </View>
+                    <TouchableOpacity
+                        style={{
+                            width: 32,
+                            backgroundColor: COLORS.primary_bg,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderTopRightRadius: 25,
+                            borderBottomRightRadius: 25
+                        }}
+                        onPress={() => editOrder("+", item.menuId, item.price)}
+                    >
+
+                        <Text style={{ ...FONTS.body1, color: COLORS.primary_default }}>+</Text>
+                    </TouchableOpacity>
+                </View>
+
+
+            </TouchableOpacity>
+
+        )
+
+        return (
+            <View style={{ marginTop: SIZES.padding }}>
+                <FlatList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    data={productList}
+                    renderItem={renderCard}
+                    keyExtractor={item => item.productId}
+                />
+            </View>
+        )
+
+    }
 
     const [tabList, setTabList] = React.useState([
 
@@ -395,8 +504,7 @@ const Drinks = ({ navigation }) => {
             <View style={{ borderTopColor: COLORS.primary_default, borderTopWidth: 1, borderBottomWidth: 1, borderBottomColor: COLORS.primary_default }}>
                 <View style={{ flexDirection: 'row', marginBottom: SIZES.padding * 8 }}>
                     <TouchableOpacity style={{ flex: 1 }}>
-                        <Text style={{ color: COLORS.primary_default, ...FONTS.h2, left: '5%', top: '5%', padding: SIZES.padding }}>Total</Text>
-                        <TextInput
+                        <Text
                             style={{
 
                                 marginVertical: SIZES.padding,
@@ -410,12 +518,8 @@ const Drinks = ({ navigation }) => {
                                 borderRadius: 20,
                                 ...FONTS.h3
                             }}
-                            placeholder="R"
-                            placeholderTextColor={COLORS.primary_default}
-                            selectionColor={COLORS.primary_default}
-
-                            paddingHorizontal={SIZES.padding * 2}
-                        />
+                        >{getCartItemCount()} items in Cart</Text>
+                        <Text style={{ ...FONTS.h3 }}>R{sumOrder()}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -430,7 +534,7 @@ const Drinks = ({ navigation }) => {
                         }}
                         onPress={() => navigation.navigate('Tickets')}
                     >
-                        <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, justifyContent: 'center', marginLeft: SIZES.padding * 3 }}>Purchase</Text>
+                        <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, justifyContent: 'center', marginLeft: SIZES.padding * 3 }}>Order</Text>
                     </TouchableOpacity>
                 </View>
             </View>

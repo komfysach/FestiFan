@@ -24,6 +24,7 @@ const burgers = require('../assets/icons/burgers.png');
 const pizzas = require('../assets/icons/pizzas.png');
 const noodles = require('../assets/icons/noodles.png');
 const desserts = require('../assets/icons/desserts.png');
+const like = require('../assets/icons/like.png');
 
 export default {
     back,
@@ -51,5 +52,6 @@ export default {
     burgers,
     pizzas,
     noodles,
-    desserts
+    desserts,
+    like
 };
