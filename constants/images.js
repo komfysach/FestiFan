@@ -16,6 +16,10 @@ const festiNoodles = require('../assets/images/festi-noodles.png');
 const chowMein = require('../assets/images/chow-mein.png');
 const festiDesserts = require('../assets/images/festi-desserts.png');
 const waffle = require('../assets/images/waffle.png');
+const ticket1 = require('../assets/images/festival-ticket-1.png');
+const ticket2 = require('../assets/images/festival-ticket-2.png');
+const ticket3 = require('../assets/images/festival-ticket-3.png');
+const ticket4 = require('../assets/images/festival-ticket-4.png');
 
 export default {
     festiLogo,
@@ -35,5 +39,9 @@ export default {
     festiNoodles,
     festiDesserts,
     chowMein,
-    waffle
+    waffle,
+    ticket1,
+    ticket2,
+    ticket3,
+    ticket4
 }

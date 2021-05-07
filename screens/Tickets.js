@@ -15,234 +15,183 @@ import {
 } from "react-native";
 
 
+
+
 import { COLORS, images, SIZES, width, icons, FONTS } from "../constants";
 
-
-const ScrollableCard = ({ navigation, productList }) => {
-
-    const renderCard = ({ item }) => (
-        <TouchableOpacity
-            style={{ marginLeft: SIZES.padding * 2, marginTop: SIZES.padding, borderColor: COLORS.primary_default, borderWidth: 1, borderRadius: 20, height: SIZES.height / 2.5 }}
-        >
-            <View style={{ width: SIZES.width / 1.5, margin: SIZES.padding }}>
-                <Image
-                    source={item.image}
-                    resizeMode='cover'
-                    style={{ width: '90%', height: '70%', borderRadius: 20, margin: SIZES.padding }}
-                />
-            </View>
-            <View
-                style={{ position: 'absolute', bottom: 75, left: '13%', right: '10%', top: '60%' }}
-            >
-
-                <Text style={{ color: COLORS.primary_default, ...FONTS.h3 }}>{item.productName}</Text>
-                <Text style={{ color: COLORS.primary_default, ...FONTS.body3 }}>{item.productQauntity}</Text>
-
-            </View>
-            <View style={{ position: 'absolute', bottom: 20, left: 30, borderRadius: 20, paddingVertical: 10, paddingHorizontal: 15, backgroundColor: COLORS.secondary_light }}>
-                <View>
-                    <Text style={{ color: COLORS.primary_default, ...FONTS.h3 }}>R {item.price.toFixed(2)} </Text>
-                </View>
-
-            </View>
+import { TicketInfo } from '../screens';
 
 
-        </TouchableOpacity>
 
-    )
-
-    return (
-        <View style={{ marginTop: SIZES.padding }}>
-            <FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={productList}
-                renderItem={renderCard}
-                keyExtractor={item => item.productId}
-            />
-        </View>
-    )
-
-}
 
 const Tickets = ({ navigation }) => {
 
-    const [tabList, setTabList] = React.useState([
-        {
-            id: 0,
-            name: 'Beer',
-            title: 'beers',
-            productList: [
-                {
-                    productId: 1,
-                    productName: 'Castle Lager',
-                    productQauntity: '340ml',
-                    price: 30.00,
-                    image: images.beerCan,
-                },
-                {
-                    productId: 2,
-                    productName: 'Castle Light',
-                    productQauntity: '340ml',
-                    price: 30.00,
-                    image: images.beerCan,
-                },
-                {
-                    productId: 3,
-                    productName: 'Budweiser',
-                    productQauntity: '340ml',
-                    price: 30.00,
-                    image: images.beerCan,
-                },
-                {
-                    productId: 4,
-                    productName: 'CBC',
-                    productQauntity: '340ml',
-                    price: 30.00,
-                    image: images.beerCan,
-                },
-            ]
-        },
+    // Dummy Data
+
+    const categoryData = [
         {
             id: 1,
-            name: 'Cider',
-            title: 'ciders',
-            productList: [
-                {
-                    productId: 1,
-                    productName: 'Hunters Dry',
-                    productQauntity: '340ml',
-                    price: 30.00,
-                    image: images.beerCan,
-                },
-                {
-                    productId: 2,
-                    productName: 'Savannah',
-                    productQauntity: '340ml',
-                    price: 30.00,
-                    image: images.beerCan,
-                },
-                {
-                    productId: 3,
-                    productName: 'Strongbow',
-                    productQauntity: '340ml',
-                    price: 30.00,
-                    image: images.beerCan,
-                },
-                {
-                    productId: 4,
-                    productName: 'Hunters Extreme',
-                    productQauntity: '340ml',
-                    price: 30.00,
-                    image: images.beerCan,
-                },
-            ]
+            name: 'Burgers',
+            icon: icons.burgers,
         },
         {
             id: 2,
-            name: 'Liqour',
-            title: 'liqour',
-            productList: [
-                {
-                    productId: 1,
-                    productName: 'Vodka',
-                    price: 30.00,
-                    image: images.paperCup,
-                },
-                {
-                    productId: 2,
-                    productName: 'Brandy',
-                    price: 30.00,
-                    image: images.paperCup,
-                },
-                {
-                    productId: 3,
-                    productName: 'Whiskey',
-                    price: 30.00,
-                    image: images.paperCup,
-                },
-                {
-                    productId: 4,
-                    productName: 'Rum',
-                    price: 30.00,
-                    image: images.paperCup,
-                },
-            ]
+            name: 'Pizzas',
+            icon: icons.pizzas,
         },
         {
             id: 3,
-            name: 'Shot',
-            title: 'shooters',
-            productList: [
-                {
-                    productId: 1,
-                    productName: 'Jagermeister',
-                    price: 30.00,
-                    image: images.paperCup,
-                },
-                {
-                    productId: 2,
-                    productName: 'Tequila',
-                    price: 30.00,
-                    image: images.paperCup,
-                },
-                {
-                    productId: 3,
-                    productName: 'Caramel Vodka',
-                    price: 30.00,
-                    image: images.paperCup,
-                },
-                {
-                    productId: 4,
-                    productName: 'Jager Bombs',
-                    price: 30.00,
-                    image: images.paperCup,
-                },
-            ]
+            name: 'Noodles',
+            icon: icons.noodles,
         },
         {
             id: 4,
-            name: 'Specials',
-            title: 'specials',
-            productList: [
+            name: 'Desserts',
+            icon: icons.desserts,
+        }
+
+    ]
+
+    const affordable = 1
+    const fairPrice = 2
+    const expensive = 3
+
+    const ticketData = [
+        {
+            id: 1,
+            name: 'Festival One',
+            photo: images.ticket1,
+            price: 'R150-R350',
+
+            info: [
                 {
-                    productId: 1,
-                    productName: 'Vodka & Red Bull',
-                    price: 30.00,
-                    image: images.paperCup,
+                    infoId: 1,
+                    name: 'General Ticket',
+                    photo: images.ticket1,
+                    description: 'General Admittance',
+                    price: 150
                 },
                 {
-                    productId: 2,
-                    productName: 'Brandy & Coke',
-                    price: 30.00,
-                    image: images.paperCup,
+                    infoId: 2,
+                    name: 'VIP Ticket',
+                    photo: images.ticket1,
+                    description: 'VIP Admittance',
+                    price: 250
                 },
                 {
-                    productId: 3,
-                    productName: 'Whiskey & Water',
-                    price: 30.00,
-                    image: images.paperCup,
-                },
-                {
-                    productId: 4,
-                    productName: 'Beer Bucket',
-                    price: 30.00,
-                    image: images.paperCup,
+                    infoId: 3,
+                    name: 'Backstage Pass',
+                    photo: images.ticket1,
+                    description: 'Backstage Admittance',
+                    price: 350
                 },
             ]
         },
 
-    ])
+        {
+            id: 2,
+            name: 'Festival Two',
+            photo: images.ticket2,
+            price: 'R150-R350',
 
-    const [selectedTab, setSelectedTab] = React.useState({
+            info: [
+                {
+                    infoId: 1,
+                    name: 'General Ticket',
+                    photo: images.ticket2,
+                    description: 'General Admittance',
+                    price: 150
+                },
+                {
+                    infoId: 2,
+                    name: 'VIP Ticket',
+                    photo: images.ticket2,
+                    description: 'VIP Admittance',
+                    price: 250
+                },
+                {
+                    infoId: 3,
+                    name: 'Backstage Pass',
+                    photo: images.ticket2,
+                    description: 'Backstage Admittance',
+                    price: 350
+                },
+            ]
+        },
 
-    })
+        {
+            id: 3,
+            name: 'Festival Three',
+            photo: images.ticket3,
+            price: 'R150-R350',
+
+            info: [
+                {
+                    infoId: 1,
+                    name: 'General Ticket',
+                    photo: images.ticket3,
+                    description: 'General Admittance',
+                    price: 150
+                },
+                {
+                    infoId: 2,
+                    name: 'VIP Ticket',
+                    photo: images.ticket3,
+                    description: 'VIP Admittance',
+                    price: 250
+                },
+                {
+                    infoId: 3,
+                    name: 'Backstage Pass',
+                    photo: images.ticket3,
+                    description: 'Backstage Admittance',
+                    price: 350
+                },
+            ]
+        },
+
+        {
+            id: 4,
+            name: 'Festival Four',
+            photo: images.ticket4,
+            price: 'R150-R350',
+
+            info: [
+                {
+                    infoId: 1,
+                    name: 'General Ticket',
+                    photo: images.ticket4,
+                    description: 'General Admittance',
+                    price: 150
+                },
+                {
+                    infoId: 2,
+                    name: 'VIP Ticket',
+                    photo: images.ticket4,
+                    description: 'VIP Admittance',
+                    price: 250
+                },
+                {
+                    infoId: 3,
+                    name: 'Backstage Pass',
+                    photo: images.ticket4,
+                    description: 'Backstage Admittance',
+                    price: 350
+                },
+            ]
+        },
+    ]
+
+    const [categories, setCategories] = React.useState(categoryData)
+    const [selectedCategory, setSelectedCategory] = React.useState(null)
+    const [tickets, settickets] = React.useState(ticketData)
+
 
     function renderTicketsHeader() {
         return (
             <View>
                 <TouchableOpacity>
-                    <Text style={{ color: COLORS.primary_default, ...FONTS.h3, marginTop: SIZES.padding, marginLeft: SIZES.padding * 14.5, marginBottom: SIZES.padding * -2 }}>Tickets</Text>
+                    <Text style={{ color: COLORS.primary_default, ...FONTS.h3, marginTop: SIZES.padding, marginLeft: SIZES.padding * 15, marginBottom: SIZES.padding * 2 }}>Tickets</Text>
                 </TouchableOpacity>
             </View>
 
@@ -250,53 +199,12 @@ const Tickets = ({ navigation }) => {
 
     }
 
-    function renderHeader() {
-        return (
-            <View style={{ borderColor: COLORS.primary_default, borderWidth: 1 }}>
-                <View style={{ flexDirection: 'row', alignContent: 'flex-start' }}>
-                    <TouchableOpacity
-                        style={{ flex: 1, left: 0 }}
-                        onPress={() => console.log('festi logo on clicked')}
-                    >
-                        <Image
-                            source={icons.festi}
-                            resizeMode='contain'
-                            style={{
-                                width: 100,
-                                height: 100,
-                            }}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={{ color: COLORS.primary_default, ...FONTS.h3, marginTop: SIZES.padding * 4 }}>
-                            Adam</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={{ flex: 1, right: 0, alignItems: 'flex-end' }}
-                        onPress={() => console.log('profile on clicked')}
-                    >
-                        <Image
-                            source={icons.profile}
-                            resizeMode='contain'
-                            style={{
-                                width: 100,
-                                height: 100,
-                            }}
-                        />
-                    </TouchableOpacity>
-                </View>
-
-            </View>
-        )
-    }
-    function renderTabs() {
-        return (
-            <View>
-                <Text></Text>
-            </View>
-        )
-    }
+    {/*function onSelectCategory(category) {
+        // filters tickets
+        let ticketList = ticketData.filter(a => a.categories.includes(categoryData))
+        settickets(ticketList)
+        setSelectedCategory(category)
+    }*/}
 
     function renderSearchBar() {
         return (
@@ -351,69 +259,172 @@ const Tickets = ({ navigation }) => {
             </View>
         )
     }
-    function renderTotalTab() {
+
+    function renderHeader() {
         return (
-            <View style={{ borderTopColor: COLORS.primary_default, borderTopWidth: 1, borderBottomWidth: 1, borderBottomColor: COLORS.primary_default }}>
-                <View style={{ flexDirection: 'row', marginBottom: SIZES.padding * 8 }}>
-                    <TouchableOpacity style={{ flex: 1 }}>
-                        <Text style={{ color: COLORS.primary_default, ...FONTS.h2, left: '5%', top: '5%', padding: SIZES.padding }}>Total</Text>
-                        <TextInput
+            <View style={{ borderColor: COLORS.primary_default, borderWidth: 1 }}>
+                <View style={{ flexDirection: 'row', alignContent: 'flex-start' }}>
+                    <TouchableOpacity
+                        style={{ flex: 1, left: 0 }}
+                        onPress={() => console.log('festi logo on clicked')}
+                    >
+                        <Image
+                            source={icons.festi}
+                            resizeMode='contain'
                             style={{
-
-                                marginVertical: SIZES.padding,
-                                borderColor: COLORS.primary_default,
-                                margin: SIZES.padding * 2,
-                                borderWidth: 1,
-                                height: 45,
-                                width: 170,
-                                color: COLORS.primary_default,
-                                backgroundColor: COLORS.primary_bg,
-                                borderRadius: 20,
-                                ...FONTS.h3
+                                width: 100,
+                                height: 100,
                             }}
-                            placeholder="R"
-                            placeholderTextColor={COLORS.primary_default}
-                            selectionColor={COLORS.primary_default}
-
-                            paddingHorizontal={SIZES.padding * 2}
                         />
                     </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Text style={{ color: COLORS.primary_default, ...FONTS.h3, marginTop: SIZES.padding * 4 }}>
+                            Adam</Text>
+                    </TouchableOpacity>
+
                     <TouchableOpacity
-                        style={{
-                            height: 45,
-                            width: "40%",
-                            backgroundColor: COLORS.primary_default,
-                            borderRadius: SIZES.radius,
-                            alightItems: 'center',
-                            justifyContent: 'center',
-                            marginTop: SIZES.padding * 6,
-                            marginRight: SIZES.padding
-                        }}
-                        onPress={() => navigation.navigate('Tickets')}
+                        style={{ flex: 1, right: 0, alignItems: 'flex-end' }}
+                        onPress={() => console.log('profile on clicked')}
                     >
-                        <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, justifyContent: 'center', marginLeft: SIZES.padding * 3 }}>Order</Text>
+                        <Image
+                            source={icons.profile}
+                            resizeMode='contain'
+                            style={{
+                                width: 100,
+                                height: 100,
+                            }}
+                        />
                     </TouchableOpacity>
                 </View>
+
             </View>
+        )
+    }
+
+    {/*function renderMainCategories() {
+        const renderItem = ({ item }) => {
+            return (
+                <TouchableOpacity
+                    style={{
+                        padding: SIZES.padding,
+                        paddingBottom: SIZES.padding * 2,
+                        backgroundColor: (selectedCategory?.id === item.id) ? COLORS.primary : COLORS.primary_bg,
+                        borderRadius: SIZES.radius,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: SIZES.padding,
+
+                    }}
+                    onPress={() => onSelectCategory(item)}
+                >
+                    <View
+                        style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 25,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: COLORS.primary_bg
+                        }}
+                    >
+                        <Image
+                            source={item.icon}
+                            resizeMode='contain'
+                            style={{
+                                width: 50,
+                                height: 50
+                            }}
+                        />
+
+                    </View>
+                    <Text style={{ marginTop: SIZES.padding, color: COLORS.primary_default }}
+                    >
+                        {item.name}
+                    </Text>
+
+                </TouchableOpacity>
+            )
+        }
+
+        return (
+            <View style={{ padding: SIZES.padding * 2 }}>
+
+                <FlatList
+                    data={categories}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={item => `${item.id}`}
+                    renderItem={renderItem}
+                    contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
+                />
+
+            </View>
+        )
+    } */}
+
+
+    function renderticketList() {
+        const renderItem = ({ item }) => (
+            <TouchableOpacity
+                style={{
+                    marginBottom: SIZES.padding * 2,
+                }}
+                onPress={() => navigation.navigate("TicketInfo", {
+                    item
+                })}
+            >
+                {/*Image*/}
+                <View style={{ marginBottom: SIZES.padding }}>
+                    <Image
+                        source={item.photo}
+                        resizeMode='cover'
+                        style={{
+                            width: '100%',
+                            height: 200,
+                            borderRadius: SIZES.radius
+                        }}
+                    />
+                    <View
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            height: 50,
+                            width: SIZES.width * 0.3,
+                            backgroundColor: COLORS.secondary_light,
+                            borderTopRightRadius: SIZES.radius,
+                            borderBottomLeftRadius: SIZES.radius,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            ...styles.shadow
+                        }}
+                    >
+                        <Text style={{ color: COLORS.primary_default, ...FONTS.body3 }}>{item.price}</Text>
+                    </View>
+                </View>
+                {/* ticket Info */}
+                <Text style={{ color: COLORS.primary_default, ...FONTS.h3 }}>{item.name}</Text>
+
+
+            </TouchableOpacity>
+        )
+        return (
+            <FlatList
+                data={tickets}
+                keyExtractor={item => `${item.id}`}
+                renderItem={renderItem}
+                contentContainerStyle={{
+                    paddingHorizontal: SIZES.padding * 2,
+                    paddingBottom: 30
+                }}
+            />
         )
     }
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
-            {renderTicketsHeader()}
-            {renderTabs(selectedTab.title)}
             {renderSearchBar()}
-
-            <View style={{ flex: 1 }}>
-                <ScrollableCard
-
-                />
-            </View>
-            {renderTotalTab()}
-
-
-
-
+            {renderTicketsHeader()}
+            {renderticketList()}
 
         </SafeAreaView>
     )

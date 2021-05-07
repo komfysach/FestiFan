@@ -11,6 +11,7 @@ import AddCredits from './AddCredits'
 import Food from './Food'
 import OnBoarding from './OnBoarding'
 import Stalls from './Stalls'
+import TicketInfo from './TicketInfo'
 
 export {
     Tickets,
@@ -25,5 +26,6 @@ export {
     AddCredits,
     Food,
     OnBoarding,
-    Stalls
+    Stalls,
+    TicketInfo
 }

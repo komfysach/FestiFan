@@ -14,6 +14,8 @@ import {
     Button
 } from "react-native";
 
+import { isIphoneX } from 'react-native-iphone-x-helper'
+
 
 import { COLORS, images, SIZES, width, icons, FONTS } from "../constants";
 
@@ -22,6 +24,8 @@ import { COLORS, images, SIZES, width, icons, FONTS } from "../constants";
 const Drinks = ({ navigation }) => {
 
     const [orderItems, setOrderItems] = React.useState([]);
+    const [drink, setDrink] = React.useState(null);
+
 
     function editOrder(action, menuId, price) {
         let orderList = orderItems.slice()
@@ -176,7 +180,7 @@ const Drinks = ({ navigation }) => {
                             justifyContent: 'center',
                         }}
                     >
-                        <Text style={{ ...FONTS.h3, color: COLORS.primary_default }}>1</Text>
+                        <Text style={{ ...FONTS.h3, color: COLORS.primary_default }}>{getOrderQty(item.menuId)}</Text>
                     </View>
                     <TouchableOpacity
                         style={{
@@ -501,42 +505,74 @@ const Drinks = ({ navigation }) => {
     }
     function renderTotalTab() {
         return (
-            <View style={{ borderTopColor: COLORS.primary_default, borderTopWidth: 1, borderBottomWidth: 1, borderBottomColor: COLORS.primary_default }}>
-                <View style={{ flexDirection: 'row', marginBottom: SIZES.padding * 8 }}>
-                    <TouchableOpacity style={{ flex: 1 }}>
-                        <Text
-                            style={{
+            <View
+                style={{
+                    backgroundColor: COLORS.primary_bg,
+                    borderTopLeftRadius: 40,
+                    borderTopRightRadius: 40,
 
-                                marginVertical: SIZES.padding,
-                                borderColor: COLORS.primary_default,
-                                margin: SIZES.padding * 2,
-                                borderWidth: 1,
-                                height: 45,
-                                width: 170,
-                                color: COLORS.primary_default,
-                                backgroundColor: COLORS.primary_bg,
-                                borderRadius: 20,
-                                ...FONTS.h3
-                            }}
-                        >{getCartItemCount()} items in Cart</Text>
-                        <Text style={{ ...FONTS.h3 }}>R{sumOrder()}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{
-                            height: 45,
-                            width: "40%",
-                            backgroundColor: COLORS.primary_default,
-                            borderRadius: SIZES.radius,
-                            alightItems: 'center',
-                            justifyContent: 'center',
-                            marginTop: SIZES.padding * 6,
-                            marginRight: SIZES.padding
-                        }}
-                        onPress={() => navigation.navigate('Tickets')}
-                    >
-                        <Text style={{ color: COLORS.primary_bg, ...FONTS.h3, justifyContent: 'center', marginLeft: SIZES.padding * 3 }}>Order</Text>
-                    </TouchableOpacity>
+                }}
+            >
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingVertical: SIZES.padding * 2,
+                        paddingHorizontal: SIZES.padding * 3,
+                        bottom: 30
+                    }}
+                >
+                    <Text style={{ ...FONTS.h3, color: COLORS.primary_default }}>{getCartItemCount()} items in Cart</Text>
+                    <Text style={{ ...FONTS.h3, color: COLORS.primary_default }}>R{sumOrder()}</Text>
                 </View>
+
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingVertical: SIZES.padding * 2,
+                        paddingHorizontal: SIZES.padding * 3
+                    }}
+                >
+                    {/* Order Button */}
+                    <View
+                        style={{
+                            padding: SIZES.padding,
+                            marginLeft: SIZES.padding * -2,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            bottom: 60
+                        }}
+                    >
+                        <TouchableOpacity
+                            style={{
+                                width: SIZES.width * 0.9,
+                                padding: SIZES.padding,
+                                backgroundColor: COLORS.primary_default,
+                                alignItems: 'center',
+                                borderRadius: SIZES.radius
+                            }}
+                        >
+                            <Text style={{ color: COLORS.primary_bg, ...FONTS.h2 }}>Order</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                {isIphoneX() &&
+                    <View
+                        style={{
+                            position: 'absolute',
+                            bottom: -34,
+                            left: 0,
+                            right: 0,
+                            height: 34,
+                            backgroundColor: COLORS.primary_bg
+                        }}
+                    >
+
+                    </View>
+                }
+
             </View>
         )
     }
